@@ -1,60 +1,56 @@
-import numpy as np 
-fresult= 0
-number_dict = {'1':'one',
-               '2':'two',
-               '3':'three',
-               '4':'four',
-               '5':'five',
-               '6':'six',
-               '7':'seven',
-               '8':'eight',
-               '9':'nine'
-}
-with open('a.txt', 'r') as f:
-    ct= 0 
-    temp = 0
-    temp2 = 0
-    for i in range(0,1000,1):    
-        line = str(f.readline())
-        str1 = str(line)
-        str2 = reversed(str1)
-        for chr in str1: 
-            temp = [-1,-1,-1,]
-            for i in range(0,9,1):
-                if number_dict.get("i") in line is not None :
-                    a = 0
-                    temp[a] = int(chr)  
-                    a = a+1
-                
-                    #print(temp[0], temp[-1])
-                    break  
-             
-                elif chr.isnumeric() == True:
-                    a = 0
-                    temp[a] = int(chr)  
-                    a = a+1
-                    
-                    #print(temp[0], temp[-1])
-                    break  
-        for i in range(0,9,1):
-                if number_dict.get("i") in line is  not None :
-                    b = 0
-                    temp2[b] = int(chr)  
-                    b = b+1
-                
-                    #print(temp[0], temp[-1])
-                    break  
-             
-                elif chr.isnumeric() == True:
-                    b = 0
-                    temp2[b] = int(chr)  
-                    b = b+1
-                    
-                    #print(temp[0], temp[-1])
-                    break
-        #print(line)
-        print(temp[0], temp2[0])
-        result = (temp[0])*10 + temp2[0]
-        fresult += result
-    print(fresult)
-f.close()
+import re
+import numpy as np
+numbers = []
+lines = []
+with open('a.txt', 'r') as file:
+    for line in file:
+        line = line.strip()
+        if line:
+            line_words = re.findall(r'(?=(1|2|3|4|5|6|7|8|9|one|two|three|four|five|six|seven|eight|nine))', line)
+            # new_line_words = []
+            # for lw in line_words:
+            #     if lw == 'twoone':
+            #         new_line_words.append(2)
+            #         new_line_words.append(1)
+            #     else:
+            #         new_line_words.append(lw)
+            
+            numbers.append(line_words)
+            lines.append(line)   
+print(numbers)
+def text_to_digit(text):
+    if text == 'one':
+        return 1
+    elif text == 'two':
+        return 2
+    elif text == 'three':
+        return 3
+    elif text == 'four':
+        return 4
+    elif text == 'five':
+        return 5
+    elif text == 'six':
+        return 6
+    elif text == 'seven':
+        return 7
+    elif text == 'eight':
+        return 8
+    elif text == 'nine':
+        return 9
+    else:
+        return int(text)
+
+digit_numbers = []
+for l in numbers:
+    first = l[0]
+    last = l[-1]
+    if first.isnumeric():
+        last = text_to_digit(last)
+    elif last.isnumeric():
+        first = text_to_digit(first)
+    elif not first.isnumeric() and not last.isnumeric():
+        first = text_to_digit(first)
+        last = text_to_digit(last)
+    digit_numbers.append(int(first)*10 + int(last))
+print(digit_numbers)
+print(np.sum(digit_numbers))
